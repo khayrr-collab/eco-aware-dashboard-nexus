@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AlertTriangle, Send, MessageSquare, FileText, LogOut, Activity, MapPin, Users, Zap, Clock, CheckCircle, XCircle, Menu } from "lucide-react";
+import { AlertTriangle, Send, MessageSquare, FileText, LogOut, Activity, MapPin, Users, Zap, Clock, CheckCircle, XCircle, Menu, Home, Cloud } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 const Dashboard = () => {
@@ -40,12 +41,36 @@ const Dashboard = () => {
   const AppSidebar = () => (
     <Sidebar className="border-r border-border bg-card">
       <SidebarContent>
-        <div className="p-4 border-b border-border">
-          <h2 className="text-lg font-semibold text-foreground">Climate Dashboard</h2>
-        </div>
+        {/* Clickable Header/Logo */}
+        <Link to="/" className="p-4 border-b border-border hover:bg-muted/50 transition-colors">
+          <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-primary to-accent rounded-lg">
+              <Cloud className="w-5 h-5 text-primary-foreground" />
+            </div>
+            <h2 className="text-lg font-semibold text-foreground">ClimateAlert</h2>
+          </div>
+        </Link>
         
+        {/* Navigation Menu */}
         <SidebarGroup>
-          <SidebarGroupLabel>Main Menu</SidebarGroupLabel>
+          <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              <SidebarMenuItem>
+                <SidebarMenuButton asChild>
+                  <Link to="/" className="flex items-center gap-2 text-muted-foreground hover:text-foreground">
+                    <Home className="w-4 h-4" />
+                    <span>Back to Home</span>
+                  </Link>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+        
+        {/* Dashboard Menu */}
+        <SidebarGroup>
+          <SidebarGroupLabel>Dashboard</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sidebarItems.map((item) => (
@@ -69,8 +94,14 @@ const Dashboard = () => {
         </SidebarGroup>
         
         <div className="mt-auto p-4">
+          <Link to="/">
+            <Button variant="outline" className="w-full mb-2">
+              <Home className="w-4 h-4 mr-2" />
+              Exit Dashboard
+            </Button>
+          </Link>
           <Button variant="destructive" className="w-full">
-            <LogOut className="w-4 h-4" />
+            <LogOut className="w-4 h-4 mr-2" />
             Logout
           </Button>
         </div>
