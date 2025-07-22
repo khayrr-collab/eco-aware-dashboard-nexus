@@ -188,6 +188,229 @@ const Dashboard = () => {
           </div>
         );
       
+      case "logs":
+        return (
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-foreground mb-2">Delivery Logs</h2>
+              <p className="text-muted-foreground">Track message delivery success and failure reports</p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Success Rate</p>
+                      <p className="text-2xl font-bold text-success">94.2%</p>
+                    </div>
+                    <CheckCircle className="w-8 h-8 text-success" />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Failed Deliveries</p>
+                      <p className="text-2xl font-bold text-destructive">156</p>
+                    </div>
+                    <XCircle className="w-8 h-8 text-destructive" />
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-lg transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-sm font-medium text-muted-foreground">Pending</p>
+                      <p className="text-2xl font-bold text-warning">23</p>
+                    </div>
+                    <Clock className="w-8 h-8 text-warning" />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+            
+            <div className="space-y-4">
+              {[
+                { id: "LOG001", message: "Flood alert sent to Ikoyi residents", status: "delivered", recipients: 1200, timestamp: "2024-01-22 14:30:15", deliveryTime: "2.3s" },
+                { id: "LOG002", message: "Heat advisory for Victoria Island", status: "delivered", recipients: 800, timestamp: "2024-01-22 13:45:22", deliveryTime: "1.8s" },
+                { id: "LOG003", message: "Storm warning for Lekki area", status: "failed", recipients: 950, timestamp: "2024-01-22 12:15:08", deliveryTime: "-", error: "Network timeout" },
+                { id: "LOG004", message: "Air quality alert for Surulere", status: "pending", recipients: 670, timestamp: "2024-01-22 11:30:45", deliveryTime: "-" },
+                { id: "LOG005", message: "Emergency evacuation notice", status: "delivered", recipients: 2100, timestamp: "2024-01-22 10:45:30", deliveryTime: "3.1s" }
+              ].map((log) => (
+                <Card key={log.id} className="hover:shadow-lg transition-shadow">
+                  <CardContent className="p-6">
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center gap-4">
+                        <div className="p-2 rounded-lg bg-muted">
+                          <FileText className="w-5 h-5 text-foreground" />
+                        </div>
+                        <div>
+                          <h3 className="font-semibold text-foreground">{log.message}</h3>
+                          <p className="text-sm text-muted-foreground">
+                            ID: {log.id} • {log.recipients} recipients • {log.timestamp}
+                          </p>
+                        </div>
+                      </div>
+                      <Badge 
+                        variant={log.status === "delivered" ? "secondary" : log.status === "failed" ? "destructive" : "outline"}
+                        className="flex items-center gap-1"
+                      >
+                        {log.status === "delivered" && <CheckCircle className="w-3 h-3" />}
+                        {log.status === "failed" && <XCircle className="w-3 h-3" />}
+                        {log.status === "pending" && <Clock className="w-3 h-3" />}
+                        {log.status}
+                      </Badge>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                      <div>
+                        <span className="text-muted-foreground">Delivery Time:</span>
+                        <p className="font-medium text-foreground">{log.deliveryTime}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Recipients:</span>
+                        <p className="font-medium text-foreground">{log.recipients}</p>
+                      </div>
+                      <div>
+                        <span className="text-muted-foreground">Method:</span>
+                        <p className="font-medium text-foreground">SMS + Voice</p>
+                      </div>
+                      {log.error && (
+                        <div>
+                          <span className="text-muted-foreground">Error:</span>
+                          <p className="font-medium text-destructive">{log.error}</p>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        );
+      
+      case "templates":
+        return (
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold text-foreground mb-2">Message Templates</h2>
+                <p className="text-muted-foreground">Manage pre-written alert messages for quick deployment</p>
+              </div>
+              <Button variant="climate" onClick={() => toast({ title: "New Template", description: "Template creation form would open here" })}>
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Create Template
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  id: "TEMP001",
+                  name: "Flood Emergency",
+                  category: "Emergency",
+                  message: "🚨 FLOOD ALERT: Immediate evacuation required in {AREA}. Move to higher ground now. Emergency services contacted. Stay safe!",
+                  usage: 45,
+                  lastUsed: "2 hours ago",
+                  type: "SMS + Voice"
+                },
+                {
+                  id: "TEMP002", 
+                  name: "Heat Advisory",
+                  category: "Weather",
+                  message: "🌡️ HEAT ADVISORY: High temperatures expected in {AREA} today. Stay hydrated, seek shade, avoid outdoor activities 12-4 PM.",
+                  usage: 23,
+                  lastUsed: "1 day ago",
+                  type: "SMS"
+                },
+                {
+                  id: "TEMP003",
+                  name: "Storm Warning",
+                  category: "Weather", 
+                  message: "⛈️ STORM WARNING: Severe weather approaching {AREA}. Secure loose objects, stay indoors, avoid travel if possible.",
+                  usage: 67,
+                  lastUsed: "3 days ago",
+                  type: "SMS + Voice"
+                },
+                {
+                  id: "TEMP004",
+                  name: "Air Quality Alert",
+                  category: "Health",
+                  message: "💨 AIR QUALITY ALERT: Poor air quality in {AREA}. Limit outdoor activities, wear masks, especially vulnerable persons.",
+                  usage: 12,
+                  lastUsed: "1 week ago", 
+                  type: "SMS"
+                },
+                {
+                  id: "TEMP005",
+                  name: "Evacuation Notice",
+                  category: "Emergency",
+                  message: "🚨 EVACUATION NOTICE: Immediate evacuation ordered for {AREA}. Proceed to designated safe zones. Take essential items only.",
+                  usage: 8,
+                  lastUsed: "2 weeks ago",
+                  type: "SMS + Voice + Call"
+                },
+                {
+                  id: "TEMP006",
+                  name: "Drought Advisory", 
+                  category: "Weather",
+                  message: "🌵 DROUGHT ADVISORY: Water conservation measures in effect for {AREA}. Limit non-essential water use. More info: [link]",
+                  usage: 15,
+                  lastUsed: "1 month ago",
+                  type: "SMS"
+                }
+              ].map((template) => (
+                <Card key={template.id} className="hover:shadow-lg transition-all hover:scale-[1.02]">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-center justify-between">
+                      <CardTitle className="flex items-center gap-2">
+                        <div className={`p-2 rounded-lg ${template.category === 'Emergency' ? 'bg-destructive/20' : template.category === 'Weather' ? 'bg-warning/20' : 'bg-info/20'}`}>
+                          <MessageSquare className={`w-4 h-4 ${template.category === 'Emergency' ? 'text-destructive' : template.category === 'Weather' ? 'text-warning' : 'text-info'}`} />
+                        </div>
+                        {template.name}
+                      </CardTitle>
+                      <Badge variant="outline">{template.category}</Badge>
+                    </div>
+                    <CardDescription>
+                      ID: {template.id} • Used {template.usage} times • {template.lastUsed}
+                    </CardDescription>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <div className="p-3 rounded-lg bg-muted/50 border">
+                      <p className="text-sm text-foreground italic">{template.message}</p>
+                    </div>
+                    
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Badge variant="secondary" className="text-xs">
+                          {template.type}
+                        </Badge>
+                        <span className="text-xs text-muted-foreground">
+                          {template.message.length} characters
+                        </span>
+                      </div>
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" onClick={() => toast({ title: "Template Edited", description: `${template.name} template updated` })}>
+                          Edit
+                        </Button>
+                        <Button variant="climate" size="sm" onClick={() => toast({ title: "Template Used", description: `${template.name} template deployed` })}>
+                          Use Now
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        );
+      
       default:
         return (
           <div className="text-center py-12">
